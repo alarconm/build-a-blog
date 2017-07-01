@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if blog-posts|length == 0 %}
+    <p>No posts yet</p>
+    {% endif %}
+    <p>
+        <ol>
+        {% for post in blog-posts %}
+        <li>{{ post.name }}
+            <form method="POST" action='/delete-post' style="display:-inline-block">
+                <input type="hidden" name="post-id" value="{{post.id}}" />
+                <input type="submit" value="Remove Post" />
+            </form>
+        </li>
+        {% endfor %}
+        </ol>
+    </p>
+
+    <hr />
+
+    <h2>Removed Posts</h2>
+
+    <ul>
+        {% for task in completed_tasks %}
+        <li>{{task.name}}</li>
+        {% endfor %}
+    </ul>
+    
+{% endblock %}
