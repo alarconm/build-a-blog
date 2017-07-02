@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if posts|length == 0 %}
+    <p>No posts yet</p>
+    {% endif %}
+    <p>
+        <ol>
+        {% for post in posts %}
+        <li>
+            {{ post.title }}
+            {{ post.body}}
+        </li>
+        {% endfor %}
+        </ol>
+    </p>
+
+    
+{% endblock %}
