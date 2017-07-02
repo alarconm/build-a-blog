@@ -26,11 +26,21 @@ class Blog(db.Model):
 def index():
 
     if request.method == 'POST':
-        blog_title = request.form['title']
+        blog_title = request.form['blog_title']
         blog_body = request.form['body']
+
+        if not blog_body or not blog_title:
+            if not blog_title:
+                flash('Please enter a title', 'error')
+            if not blog_body:
+                flash('Please enter content for your post', 'error')
+            return render_template('newpost.html', title="New Blog Post")
+
+
         new_post = Blog(blog_title, blog_body)
         db.session.add(new_post)
         db.session.commit()
+
 
     return render_template('index.html', title='Blog Home Page')
 
