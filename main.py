@@ -40,6 +40,7 @@ def index():
         new_post = Blog(blog_title, blog_body)
         db.session.add(new_post)
         db.session.commit()
+        return render_template('blogpage.html', post=new_post)
 
 
     return render_template('index.html', title='Blog Home Page')
@@ -53,6 +54,11 @@ def add_post():
 def blog_listings():
 
     posts = Blog.query.all()
+
+    if request.args.get('id'):
+        post_id = request.args.get('id')
+        post = Blog.query.filter_by(id=post_id).first()
+        return render_template('blogpage.html', post=post)
 
     return render_template('blog.html', posts=posts)
 
