@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ post.title }}</h1>
-<p>{{ post.body }}
+<div class='container-fluid'>
+<h3>{{ post.title }}</h3>
+<em>{{ post.pub_date }}</em>
+<p>{{ post.body }}</p>
+</div>
 
 {% endblock %}

@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 
-{% block content %}    
+{% block content %} 
+<div class='center'>        
     <h1>Add a new post</h1>
     <form action='/' method="post">
-        <label for="title">Blog Title:</label>
+        <label for="blog_title">Post Title:</label>
+        <p>
         <input type="text" name='blog_title' />
-
-        <label for="body">Blog Content:</label>
+        </p>
+        <label for="body">Post Content:</label>
+        <p> 
         <textarea name="body" cols="40" rows="15"></textarea>
+        </p>
         <input type="submit" value="New Post" />
     </form>
+</div>
 
 {% endblock %}
