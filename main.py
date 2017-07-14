@@ -20,9 +20,10 @@ class Blog(db.Model):
 
     def __init__(self, title, body, pub_date=None):
         '''Initial parameters for the Blog class'''
+
         self.title = title
         self.body = body
-        if pub_date is None:
+        if not pub_date:
             pub_date = datetime.utcnow()
         self.pub_date = pub_date
 
@@ -31,6 +32,7 @@ class Blog(db.Model):
 def index():
     '''Displays the home page. Receives post from newpost form and redirects to blog page if requirements are met'''
     
+    #POST METHOD
     if request.method == 'POST':
         blog_title = request.form['blog_title']
         blog_body = request.form['body']
@@ -43,32 +45,38 @@ def index():
                 flash('Please enter content for your post', 'error')
             return render_template('newpost.html', title="New Blog Post")
 
+        # Create new instance of blog class, commit to database
+        # query it back out and assign to template to render
         new_post = Blog(blog_title, blog_body)
         db.session.add(new_post)
         db.session.commit()
-        return render_template('blogpage.html', post=new_post)
+        post = Blog.query.filter_by(id=new_post.id).first()
+        return render_template('blogpage.html', post=post)
 
-    return render_template('index.html', title='Blog Home Page')
+    # GET METHOD
+    else:
+        return render_template('index.html', title='Blog Home Page')
 
 
 @app.route('/newpost')
 def add_post():
     '''Display the new post template'''
-
     return render_template('newpost.html')
 
 @app.route('/blog')
 def blog_listings():
     '''Display all blogs in the database, or just a specific post if an ID is passed in the GET'''
 
-    posts = Blog.query.order_by(Blog.pub_date.desc()).all()
-
+    #Display specific post
     if request.args.get('id'):
         post_id = request.args.get('id')
         post = Blog.query.filter_by(id=post_id).first()
         return render_template('blogpage.html', post=post)
-
-    return render_template('blog.html', posts=posts)
+    
+    #Display all blog posts
+    else:
+        posts = Blog.query.order_by(Blog.pub_date.desc()).all()
+        return render_template('blog.html', posts=posts)
 
 
 if __name__ == '__main__':
